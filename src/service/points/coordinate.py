@@ -29,6 +29,9 @@ class CoordinateService:
         return await self._repo.save(points)
 
     async def get(self, file_id: UUID) -> GeoPointFeatureCollection:
+        """
+        Получение точек координат
+        """
         try:
             points_model = await self._repo.get(file_id)
         except ItemNotFoundInRepoException:
@@ -43,7 +46,7 @@ class CoordinateServiceType(Enum):
 
 class CoordinateServiceFactory:
     """
-    Фабрика серисов работы с точеками координат
+    Фабрика серисов работы с точками координат
     """
 
     __slots__ = ("_service_type",)
