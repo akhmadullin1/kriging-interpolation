@@ -12,7 +12,5 @@ def get_geo_points() -> AsyncIOMotorCollection:
 
 
 def get_kriging() -> AsyncIOMotorCollection:
-    """
-    Получить коллекцию kriging
-    """
+    """Получить коллекцию kriging"""
     return get_db()[__KRIGING_COLLECTION]
