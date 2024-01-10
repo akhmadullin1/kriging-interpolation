@@ -1,8 +1,9 @@
+from fastapi import FastAPI
+
 from api.router import api_router
-from config.config import settings
+from config import settings
 from db.mongo.base import connect as mongo_connect
 from db.mongo.base import disconnect as mongo_disconnect
-from fastapi import FastAPI
 
 app = FastAPI(
     title=settings.TITLE,

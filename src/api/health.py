@@ -1,6 +1,11 @@
-from .router import api_router
+from fastapi import APIRouter
+
+health_router = APIRouter(
+    prefix="/health",
+    tags=["health"],
+)
 
 
-@api_router.get("/status", summary="Проверка жизни сервиса", tags=["health"])
+@health_router.get("/status", summary="Проверка жизни сервиса")
 async def get_status():
     return {"status": "ok"}

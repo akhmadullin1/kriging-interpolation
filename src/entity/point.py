@@ -11,7 +11,7 @@ class GeoPointProperties(BaseModel):
 
 
 class GeoPoint(GeoModel):
-    type: Literal["Point"]
+    type: Literal["Point"] = "Point"
     coordinates: conlist(float, min_length=2, max_length=2)
     properties: GeoPointProperties
 

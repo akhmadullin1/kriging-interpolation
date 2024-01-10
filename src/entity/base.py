@@ -8,10 +8,10 @@ class GeoModel(BaseModel):
 
 
 class Feature(BaseModel):
-    type: Literal["Feature"]
+    type: Literal["Feature"] = "Feature"
     geometry: GeoModel
 
 
 class FeatureCollection(BaseModel):
-    type: Literal["FeatureCollection"]
+    type: Literal["FeatureCollection"] = "FeatureCollection"
     features: list[Feature]

@@ -1,13 +1,13 @@
 from typing import Annotated
 from uuid import UUID
 
-from entity.point import GeoPointFeatureCollection
 from fastapi import APIRouter, Depends, HTTPException, status
+
+from entity.point import GeoPointFeatureCollection
 from service.exceptions import ItemNotFoundException
 from service.points.coordinate import (
     CoordinateService,
     CoordinateServiceFactory,
-    CoordinateServiceType,
 )
 
 from ...schemas import IdSchema
@@ -16,7 +16,7 @@ coordinate_router = APIRouter(prefix="/coordinate")
 
 CoordinateServiceDep = Annotated[
     CoordinateService,
-    Depends(CoordinateServiceFactory(CoordinateServiceType.MONGO_SERVICE)),
+    Depends(CoordinateServiceFactory()),
 ]
 
 
@@ -25,9 +25,7 @@ CoordinateServiceDep = Annotated[
     summary="Сохранить координаты",
     status_code=status.HTTP_201_CREATED,
 )
-async def save_coordinates(
-    points: GeoPointFeatureCollection, service: CoordinateServiceDep
-) -> IdSchema:
+async def save_coordinates(points: GeoPointFeatureCollection, service: CoordinateServiceDep) -> IdSchema:
     file_id = await service.save(points)
     return IdSchema(id=file_id)
 
@@ -37,9 +35,7 @@ async def save_coordinates(
     summary="Получить координаты",
     status_code=status.HTTP_200_OK,
 )
-async def get_coordinates(
-    points_id: UUID, service: CoordinateServiceDep
-) -> GeoPointFeatureCollection:
+async def get_coordinates(points_id: UUID, service: CoordinateServiceDep) -> GeoPointFeatureCollection:
     try:
         points = await service.get(points_id)
     except ItemNotFoundException as ex:

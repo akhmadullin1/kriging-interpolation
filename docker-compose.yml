@@ -15,3 +15,10 @@ services:
       - ./mongo_data:/data/db
     ports:
       - 27017:27017
+  
+  redis-service:
+    image: redis:latest
+    container_name: redis-service
+    restart: always
+    ports:
+      - 6378:6379

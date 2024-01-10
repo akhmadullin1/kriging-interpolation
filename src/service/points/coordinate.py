@@ -1,6 +1,6 @@
-from enum import Enum, unique
 from uuid import UUID
 
+from config import DataBaseType, settings
 from entity.point import GeoPointFeatureCollection
 from repository.coordinate import AbstractCoordinateRepo, MongoCoordinateRepo
 from repository.exceptions import ItemNotFoundInRepoException
@@ -9,7 +9,6 @@ from ..exceptions import ItemNotFoundException
 
 __all__ = (
     "CoordinateService",
-    "CoordinateServiceType",
     "CoordinateServiceFactory",
 )
 
@@ -39,24 +38,21 @@ class CoordinateService:
         return points_model.points
 
 
-@unique
-class CoordinateServiceType(Enum):
-    MONGO_SERVICE = 0
-
-
 class CoordinateServiceFactory:
     """
     Фабрика серисов работы с точками координат
     """
 
+    _ALLOWED_DB_TYPES = {DataBaseType.MONGO}
+
     __slots__ = ("_service_type",)
 
-    def __init__(self, service_type: CoordinateServiceType) -> None:
-        if service_type not in CoordinateServiceType:
+    def __init__(self, service_type: DataBaseType = settings.service_types.coordinate) -> None:
+        if service_type not in self._ALLOWED_DB_TYPES:
             raise ValueError("Select incorrect service type")
         self._service_type = service_type
 
     def __call__(self) -> CoordinateService:
         match self._service_type:
-            case CoordinateServiceType.MONGO_SERVICE:
+            case DataBaseType.MONGO:
                 return CoordinateService(MongoCoordinateRepo())
