@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kriging-interpolation"
-version = "0.2.0"
+version = "0.2.1"
 description = "Api for working with interpolation kriging methods"
 authors = ["Askar akhmadullin <akhmadullin.a@internet.ru>"]
 readme = "README.md"

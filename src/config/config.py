@@ -29,7 +29,7 @@ class Settings(BaseSettings):
 
     TITLE: str = "Kriging interpolation"
     SUMMARY: str = "Приложение для работы с интерполяционными методами кригинга"
-    VERSION: str = "0.2.0"
+    VERSION: str = "0.2.1"
 
     MONGO_URI: str
     MONGO_DB_NAME: str = Field(alias="MONGO_INITDB_DATABASE")

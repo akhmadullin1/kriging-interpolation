@@ -1,6 +1,33 @@
 version: '3.8'
 
 services:
+  kriging-app:
+    build: .
+    container_name: kriging-app
+    restart: always
+    command: python -m uvicorn main:app --host 0.0.0.0 --port 8000 --workers 2
+    env_file:
+      - .env
+    volumes:
+      - ./src:/code
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongodb
+      - redis-service
+
+  celery-worker:
+    build: .
+    container_name: celery-worker
+    restart: always
+    command: python -m celery -A celery_app:celery_client  worker --loglevel=INFO
+    env_file:
+      - .env
+    volumes:
+      - ./src:/code
+    depends_on:
+      - redis-service
+
   mongodb:
     image: mongo:7.0
     container_name: mongodb
@@ -13,12 +40,8 @@ services:
       - ./.env
     volumes:
       - ./mongo_data:/data/db
-    ports:
-      - 27017:27017
   
   redis-service:
     image: redis:latest
     container_name: redis-service
     restart: always
-    ports:
-      - 6378:6379
