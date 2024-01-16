@@ -3,6 +3,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from api.schemas import IdSchema
 from entity.kriging import GeoKrigingData
 from entity.point import GeoPointFeatureCollection
 from service.exceptions import ItemNotFoundException
@@ -27,9 +28,9 @@ GeoKrigingServiceDep = Annotated[
     summary="Создать процесс геопространственного кригинга",
     status_code=status.HTTP_200_OK,
 )
-async def create_geospatial_kriging_process(data: GeoKrigingData, service: GeoKrigingServiceDep):
+async def create_geospatial_kriging_process(data: GeoKrigingData, service: GeoKrigingServiceDep) -> IdSchema:
     process_id = await service.create_process(data)
-    return {"id": process_id}
+    return IdSchema(id=process_id)
 
 
 @geokriging_router.get(
