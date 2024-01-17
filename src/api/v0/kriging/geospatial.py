@@ -34,11 +34,11 @@ async def create_geospatial_kriging_process(data: GeoKrigingData, service: GeoKr
 
 
 @geokriging_router.get(
-    path="/process/{process_id}",
+    path="/process/{process_id}/result",
     summary="Получение результатов процесса кригинга",
     status_code=status.HTTP_200_OK,
 )
-async def get_geospatial_kriging_process(process_id: UUID, service: GeoKrigingServiceDep) -> GeoPointFeatureCollection:
+async def get_geospatial_kriging_result(process_id: UUID, service: GeoKrigingServiceDep) -> GeoPointFeatureCollection:
     try:
         points = await service.get_process_result(process_id)
     except ItemNotFoundException as ex:
@@ -46,6 +46,19 @@ async def get_geospatial_kriging_process(process_id: UUID, service: GeoKrigingSe
     except KrigingNotCompletedException as ex:
         raise HTTPException(status_code=status.HTTP_423_LOCKED, detail=ex.args[0])
     return points
+
+
+@geokriging_router.get(
+    path="/process/{process_id}/data",
+    summary="Получение данных о кригинге",
+    status_code=status.HTTP_200_OK,
+)
+async def get_geospatial_kriging_data(process_id: UUID, service: GeoKrigingServiceDep) -> GeoKrigingData:
+    try:
+        kriging_data = await service.get_process_kriging_data(process_id)
+    except ItemNotFoundException as ex:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=ex.args[0])
+    return kriging_data
 
 
 @geokriging_router.get(

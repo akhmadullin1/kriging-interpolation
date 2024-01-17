@@ -177,6 +177,13 @@ class GeoKrigingService:
             raise KrigingNotCompletedException
         return kriging_model.result
 
+    async def get_process_kriging_data(self, process_id: UUID) -> GeoKrigingData:
+        """
+        Получение данных о кригинге
+        """
+        kriging_model = await self.get_process(process_id)
+        return kriging_model.kriging_data
+
     async def get_process(self, process_id: UUID) -> GeoKrigingModel:
         """
         Получение процесса кригинга
