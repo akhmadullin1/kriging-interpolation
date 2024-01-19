@@ -8,4 +8,4 @@ COPY pyproject.toml /code/
 COPY /src /code
 
 RUN pip install poetry
-RUN poetry config virtualenvs.create false && poetry install --no-interaction
+RUN poetry config virtualenvs.create false && poetry install --without dev,test --no-interaction
